@@ -48,17 +48,16 @@ imap.once('ready', function() {
               if (mail.attachments) {
                 mail.attachments.forEach(function(attachment) {
                   if (attachment.contentType === 'application/pdf') {
-                    let outputFilePath = path.join(__dirname, attachment.filename);
-                    fs.writeFileSync(outputFilePath, attachment.content);
-                    console.log('PDF extracted: ' + outputFilePath); // Debugging line
+                    console.log('PDF found in the email'); // Debugging line
                     let mailOptions = {
                       from: 'timmy.moreels@gmail.com',
                       to: 'dysiscypher@gmail.com',
                       subject: 'Extracted PDF',
-                      text: 'Here is the extracted PDF.',
+                      text: '',
                       attachments: [
                         {
-                          path: outputFilePath
+                          filename: attachment.filename,
+                          content: attachment.content
                         }
                       ]
                     };
@@ -67,7 +66,7 @@ imap.once('ready', function() {
                         console.log(error);
                       } else {
                         console.log('Email sent: ' + info.response);
-                        console.log('PDF attached: ' + outputFilePath); // Debugging line
+                        console.log('PDF attached without saving to the file system'); // Debugging line
                       }
                     });
                   }
